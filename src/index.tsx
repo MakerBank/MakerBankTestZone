@@ -15,7 +15,6 @@ const App = () => {
     const [isAuthorized, setAuthorized] = useState(JSON.parse(sessionStorage.getItem('authorized') || 'false'));
 
     supabase.auth.onAuthStateChange((event, session) => {
-        try{
           console.log(event, session)
           if(event === 'SIGNED_IN'){
               sessionStorage.setItem('authorized','true')
@@ -24,9 +23,6 @@ const App = () => {
               sessionStorage.setItem('authorized','false')
               setAuthorized(false)
           }
-        }catch(error){
-          console.log(error)
-        }
     })
 
     useEffect(() => {
@@ -41,8 +37,6 @@ const App = () => {
             window.removeEventListener('storage', handleStorage);
         }
     },[])
-
-    console.log("oi2")
 
   return (
     <BrowserRouter>
