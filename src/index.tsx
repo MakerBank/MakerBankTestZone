@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 
 import Login from './pages/Login/login.tsx';
-//import Callback from './pages/Login/callback';
+import Callback from './pages/Login/callback';
 import Saldo from './pages/SaldoTrans/saldoTrans.tsx';
 import {supabase} from './components/client.js';
 import ProtectedRoute from './components/protectedRoute.tsx';
@@ -17,6 +17,7 @@ const App = () => {
     supabase.auth.onAuthStateChange((event, session) => {
           console.log(event, session)
           if(event === 'SIGNED_IN'){
+              console.log("oioioioioi")
               sessionStorage.setItem('authorized','true')
               setAuthorized(true)
           }else if(event === 'SIGNED_OUT'){
@@ -26,12 +27,10 @@ const App = () => {
     })
 
     useEffect(() => {
-        console.log("oioi")
         function handleStorage() {
             console.log(sessionStorage.getItem('authorized'));
             setAuthorized(JSON.parse(sessionStorage.getItem('authorized') || 'false'))
         }
-        console.log("oioi")
         window.addEventListener('storage', handleStorage);
         return () => {
             window.removeEventListener('storage', handleStorage);

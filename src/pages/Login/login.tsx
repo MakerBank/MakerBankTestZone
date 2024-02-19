@@ -23,7 +23,6 @@ export default function Login({isAuthorized}) {
   console.log("oi")
 
   const login = async () => {
-    console.log("oioi")
     supabase.auth.signInWithOAuth({provider: 'google'})
   }
 
