@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 
 import Login from './pages/Login/login.tsx';
-import Callback from './pages/Login/callback';
+//import Callback from './pages/Login/callback';
 import Saldo from './pages/SaldoTrans/saldoTrans.tsx';
 import {supabase} from './components/client.js';
 import ProtectedRoute from './components/protectedRoute.tsx';
