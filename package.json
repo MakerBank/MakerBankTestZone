@@ -33,6 +33,14 @@
       "react-app/jest"
     ]
   },
+  "eslintIgnore": [
+    "node_modules",
+    "build/*"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/parser": "^7.0.1",
+    "typescript": "^5.3.3"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
