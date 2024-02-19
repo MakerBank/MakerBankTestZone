@@ -58,7 +58,7 @@ export default function Login({isAuthorized}) {
                         }}
                         theme="dark"
                         providers={["google"]}
-                        redirectTo='https://https://makerbank.netlify.app/login'
+                        redirectTo='https://makerbank.netlify.app/login'
                         onlyThirdPartyProviders={true}> 
                         
                     </Auth>
