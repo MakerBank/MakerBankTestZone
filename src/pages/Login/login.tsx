@@ -20,12 +20,6 @@ import {supabase} from '../../components/client.js'
 export default function Login({isAuthorized}) {
   //const navigate = useNavigate();
 
-  console.log("oi")
-
-  const login = async () => {
-    supabase.auth.signInWithOAuth({provider: 'google'})
-  }
-
   if (isAuthorized === true) {
     const returnPathname = localStorage.getItem("lastPage") || "/saldo";
     localStorage.removeItem("lastPage");
