@@ -1,22 +1,22 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { Auth } from '@supabase/auth-ui-react';
-import {
+//import { Navigate, useNavigate, useLocation } from 'react-router-dom';
+//import { Auth } from '@supabase/auth-ui-react';
+/*import {
   // Import predefined theme
   ThemeSupa,
-} from '@supabase/auth-ui-shared'
+} from '@supabase/auth-ui-shared'*/
 
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef} from '@mui/x-data-grid';
 
 
 //import DataGrid from 'react-data-grid';
 
-import imagemFundo from '../../image/imagemFundo.jpg'
+//import imagemFundo from '../../image/imagemFundo.jpg'
 import logoMaker from '../../image/LogoMaker.png'
 import {supabase} from '../../components/client.js'
 
@@ -60,7 +60,7 @@ export default function Saldo() {
             <Grid container spacing={0} sx={{height:'100%'}}>
                 <Grid xs={0} md sx={{height:'100%', textAlign:"center", overflow:"hidden",display:{xs:'none',md:'block'}}}>
                     <Grid xs={0} md={12} sx={{display:{xs:'none',md:'block'}, height:'40%', width:'100%'}}>
-                            <img src={logoMaker} style={{ height: 'auto', width: '100%', maxWidth:'100%', padding:"8px", boxSizing:"border-box"}}/>   
+                            <img src={logoMaker} alt="logoMaker" style={{ height: 'auto', width: '100%', maxWidth:'100%', padding:"8px", boxSizing:"border-box"}}/>   
                     </Grid>
                     <Box sx={{width:'100%',height:"5%"}}/>
                     <Container sx={{width:'100%',height:"35%"}}>

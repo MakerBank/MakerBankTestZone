@@ -1,11 +1,11 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react'
+import { useState, useEffect } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 
 import Login from './pages/Login/login.tsx';
-import Callback from './pages/Login/callback.tsx';
+//import Callback from './pages/Login/callback';
 import Saldo from './pages/SaldoTrans/saldoTrans.tsx';
 import {supabase} from './components/client.js';
 import ProtectedRoute from './components/protectedRoute.tsx';
@@ -15,26 +15,34 @@ const App = () => {
     const [isAuthorized, setAuthorized] = useState(JSON.parse(sessionStorage.getItem('authorized') || 'false'));
 
     supabase.auth.onAuthStateChange((event, session) => {
-        console.log(event, session)
-        if(event === 'SIGNED_IN'){
-            sessionStorage.setItem('authorized','true')
-            setAuthorized(true)
-        }else if(event === 'SIGNED_OUT'){
-            sessionStorage.setItem('authorized','false')
-            setAuthorized(false)
+        try{
+          console.log(event, session)
+          if(event === 'SIGNED_IN'){
+              sessionStorage.setItem('authorized','true')
+              setAuthorized(true)
+          }else if(event === 'SIGNED_OUT'){
+              sessionStorage.setItem('authorized','false')
+              setAuthorized(false)
+          }
+        }catch(error){
+          console.log(error)
         }
     })
 
     useEffect(() => {
+        console.log("oioi")
         function handleStorage() {
             console.log(sessionStorage.getItem('authorized'));
             setAuthorized(JSON.parse(sessionStorage.getItem('authorized') || 'false'))
         }
+        console.log("oioi")
         window.addEventListener('storage', handleStorage);
         return () => {
             window.removeEventListener('storage', handleStorage);
         }
     },[])
+
+    console.log("oi2")
 
   return (
     <BrowserRouter>
