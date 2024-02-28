@@ -1,0 +1,21 @@
+
+
+:root{
+    height:100vh;
+}
+
+html{
+    min-height: 300px;
+    max-height: 100vh;
+    height: 100%;
+}
+
+body {
+    min-height: 300px;
+    max-height: 100vh;
+}
+
+.div-1{
+    min-height: 300px;
+    max-height: 100vh;
+}

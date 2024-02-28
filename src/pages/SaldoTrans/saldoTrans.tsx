@@ -19,7 +19,7 @@ export default function Saldo() {
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
-      <Box sx={{ display: 'flex', height: '100dvh', minHeight:'600px'}}>
+      <Box sx={{ display: 'flex', height: '100%', minHeight:'300px'}}>
         <Header />
         <Sidebar />
         <Box

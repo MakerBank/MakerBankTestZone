@@ -82,7 +82,7 @@ export default function Sidebar() {
         transition: 'transform 0.4s, width 0.4s',
         zIndex: 10000,
         height: '100dvh',
-        minHeight: '450px', 
+        minHeight: '300px', 
         width: 'var(--Sidebar-width)',
         top: 0,
         p: 2,
@@ -123,7 +123,7 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center'}}>
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
         </IconButton>
