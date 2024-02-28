@@ -17,7 +17,6 @@ const App = () => {
     supabase.auth.onAuthStateChange((event, session) => {
           console.log(event, session)
           if(event === 'SIGNED_IN'){
-              console.log("oioioioioi")
               sessionStorage.setItem('authorized','true')
               setAuthorized(true)
           }else if(event === 'SIGNED_OUT'){

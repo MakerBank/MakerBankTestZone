@@ -1,83 +1,200 @@
 import * as React from 'react';
-//import { useState, useEffect } from 'react';
+import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
+import GlobalStyles from '@mui/joy/GlobalStyles';
+import CssBaseline from '@mui/joy/CssBaseline';
+import Box from '@mui/joy/Box';
+import Button from '@mui/joy/Button';
+import { formLabelClasses } from '@mui/joy/FormLabel';
+import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
+import Link from '@mui/joy/Link';
+import Typography from '@mui/joy/Typography';
+import Stack from '@mui/joy/Stack';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import GoogleIcon from '../../components/googleIcon.tsx';
 import { Navigate} from 'react-router-dom';
-import { Auth } from '@supabase/auth-ui-react';
-import {
-  // Import predefined theme
-  ThemeSupa,
-} from '@supabase/auth-ui-shared';
-import GoogleLoginButton from 'react-google-login-button'
-
-import Grid from '@mui/material/Unstable_Grid2';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-
-import imagemFundo from '../../image/imagemFundo.jpg'
-import logoMaker from '../../image/LogoMaker.png'
-import {supabase} from '../../components/client.js'
-
-export default function Login({isAuthorized}) {
-  //const navigate = useNavigate();
-
-  if (isAuthorized === true) {
-    const returnPathname = localStorage.getItem("lastPage") || "/saldo";
-    localStorage.removeItem("lastPage");
-    return(
-      <Navigate to={returnPathname} replace></Navigate>
+import {supabase} from '../.././components/client.js';
+  
+function ColorSchemeToggle(props: IconButtonProps) {
+    const { onClick, ...other } = props;
+    const { mode, setMode } = useColorScheme();
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+    if (!mounted) {
+        return <IconButton size="sm" variant="outlined" color="neutral" disabled />;
+    }
+    return (
+        <IconButton
+        id="toggle-mode"
+        size="sm"
+        variant="outlined"
+        color="neutral"
+        aria-label="toggle light/dark mode"
+        {...other}
+        onClick={(event) => {
+            if (mode === 'light') {
+            setMode('dark');
+            } else {
+            setMode('light');
+            }
+            onClick?.(event);
+        }}
+        >
+        {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
+        </IconButton>
     );
-  }
+}
+  
+export default function Login({isAuthorized}) {
+    const loginSupabase = async() =>{  
+        await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo: 'https://makerbank.netlify.app/login'
+            }
+        })
+    }
+
+
+    if (isAuthorized === true) {
+        const returnPathname = localStorage.getItem("lastPage") || "/saldo";
+        localStorage.removeItem("lastPage");
+        return(
+          <Navigate to={returnPathname} replace></Navigate>
+        );
+    }
 
     return (
-        <Container disableGutters sx={{overflow:'hidden', minHeight:657, height:'100vh',  bgcolor:'#020e1e'}} maxWidth={false} >
-            <Grid container spacing={0} sx={{height:'100%'}}>
-                <Grid xs={12} md="auto" sx={{width:'100%',minWidth:5/12, height:'100%',textAlign:"center", overflow:"hidden"}}>
-                    <Grid justifyContent="center" alignItems="center" container spacing={0} sx={{height:'45%', width:'100%', overflow:"hidden"}}>
-                        <Grid xs={0} md={12} sx={{display:{xs:'none',md:'block'}, height:'100%', width:'100%'}}>
-                            <img src={logoMaker} alt="logoMaker" style={{ height: '100%', width: 'auto', margin:"8px"}}/>   
-                        </Grid>
-                        <Grid xs={12} md={0} sx={{display:{xs:'block',md:'none'}, height:'100%', width:'100%'}}>
-                            <img src={logoMaker} alt="logoMaker" style={{ height: 'auto', width: '100%', maxWidth:525, padding:"8px", boxSizing:"border-box"}}/>   
-                        </Grid>
-                    </Grid>
-                    <Box sx={{width:'100%',height:"5%"}}/>
-                    <Container sx={{width:'360px',height:"35%"}}>
-                    <Auth supabaseClient={supabase}
-                        appearance={{
-                        theme: ThemeSupa,
-                        variables: {
-                            default: {
-                                fontSizes: {
-                                    baseButtonSize: '3vh',
-                                },
-                                space: {
-                                    buttonPadding: '1vh 0.4vh',
-                                },
-                            },
-                        },
-                        }}
-                        theme="dark"
-                        providers={["google"]}
-                        redirectTo='https://makerbank.netlify.app/login'
-                        onlyThirdPartyProviders={true}> 
-                        
-                    </Auth>
-                    <GoogleLoginButton
-                        width={140}
-                        height={40}
-                        longTitle={false}
-                        theme="light"
-                    >   
-                    <Button onClick={() => login}/>
-                    </GoogleLoginButton>
-                    </Container>
-                    <Box sx={{width:'100%',height:"15%"}}/>
-                </Grid>
-                <Grid xs={0} md sx={{height:'100%'}}>
-                    <img src={imagemFundo} alt="backGround" height='100%' width="auto"/>
-                </Grid>
-            </Grid>
-        </Container>
-        );
+        <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
+        <CssBaseline />
+        <GlobalStyles
+            styles={{
+            ':root': {
+                '--Collapsed-breakpoint': '769px', // form will stretch when viewport is below `769px`
+                '--Cover-width': '50vw', // must be `vw` only
+                '--Form-maxWidth': '800px',
+                '--Transition-duration': 'none', // set to `none` to disable transition
+            },
+            }}
+        />
+        <Box
+            sx={(theme) => ({
+            width:
+                'clamp(100vw - var(--Cover-width), (var(--Collapsed-breakpoint) - 100vw) * 999, 100vw)',
+            minWidth: '300px',
+            transition: 'width var(--Transition-duration)',
+            transitionDelay: 'calc(var(--Transition-duration) + 0.1s)',
+            position: 'relative',
+            zIndex: 1,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            backdropFilter: 'blur(12px)',
+            backgroundColor: 'rgba(255 255 255 / 0.2)',
+            [theme.getColorSchemeSelector('dark')]: {
+                backgroundColor: 'rgba(19 19 24 / 0.4)',
+            },
+            })}
+        >
+            <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100dvh',
+                width: '100%',
+                //'clamp(var(--Form-maxWidth), (var(--Collapsed-breakpoint) - 100vw) * 999, 100%)',
+                maxWidth: '100%',
+                px: 2,
+            }}
+            >
+            <Box
+                component="header"
+                sx={{
+                py: 3,
+                display: 'flex',
+                alignItems: 'left',
+                justifyContent: 'space-between',
+                }}
+            >
+                <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
+                </Box>
+                <ColorSchemeToggle />
+            </Box>
+            <Box
+                component="main"
+                sx={{
+                my: 'auto',
+                py: 2,
+                pb: 5,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                width: 400,
+                maxWidth: '100%',
+                mx: 'auto',
+                borderRadius: 'sm',
+                '& form': {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                },
+                [`& .${formLabelClasses.asterisk}`]: {
+                    visibility: 'hidden',
+                },
+                }}
+            >
+                <Stack gap={4} sx={{ mb: 2 }}>
+                <Stack gap={1}>
+                    <Typography component="h1" level="h3">
+                    Fazer Login
+                    </Typography>
+                </Stack>
+                <Button
+                    variant="soft"
+                    color="neutral"
+                    fullWidth
+                    startDecorator={<GoogleIcon />}
+                    onClick={loginSupabase}
+                >
+                    Fazer Login com o Google
+                </Button>
+                <Typography level="body-sm">
+                   Em caso de problemas, ou para realizar o primeiro cadastro, entre em {' '}
+                   <Link href="mailto:makerbanketapa@gmail.com"> contato.</Link>
+                </Typography>
+                </Stack>
+            </Box>
+            <Box component="footer" sx={{ py: 3 }}>
+                <Typography level="body-xs" textAlign="center">
+                Maker Bank
+                </Typography>
+            </Box>
+            </Box>
+        </Box>
+        <Box
+            sx={(theme) => ({
+            height: '100%',
+            position: 'fixed',
+            right: 0,
+            top: 0,
+            bottom: 0,
+            left: 'clamp(0px, (100vw - var(--Collapsed-breakpoint)) * 999, 100vw - var(--Cover-width))',
+            transition:
+                'background-image var(--Transition-duration), left var(--Transition-duration) !important',
+            transitionDelay: 'calc(var(--Transition-duration) + 0.1s)',
+            backgroundColor: 'background.level1',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundImage:
+                'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+            [theme.getColorSchemeSelector('dark')]: {
+                backgroundImage:
+                'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
+            },
+            })}
+        />
+        </CssVarsProvider>
+    );
 }
-
