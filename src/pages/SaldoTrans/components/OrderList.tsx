@@ -27,7 +27,7 @@ export default function OrderList() {
   const [page,setPage] = useState(1)
   const [isLastPage,setIsLastPage] = useState(false)
   const [isFirstPage,setIsFirstPage] = useState(true)
-  const numberPerPage = 20
+  const numberPerPage = 10
 
   function returnArray(){
     console.log(rows.length)
@@ -79,11 +79,15 @@ export default function OrderList() {
             result.push(arrayCandidatos);
             return result;
           }, []);
+          console.log(Math.ceil(data.length/numberPerPage))
           setRows(listOfTransactions);
           if(Math.ceil(data.length/numberPerPage)==1){
             setIsLastPage(true)
             setPage(1)
           }
+        } else{
+          setIsLastPage(true)
+          setPage(0)
         }
       }
     }
