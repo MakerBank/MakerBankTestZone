@@ -52,7 +52,8 @@ export default function Login({isAuthorized}) {
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-              redirectTo: 'https://makerbank.netlify.app/login'
+              //redirectTo: 'https://makerbank.netlify.app/login'
+              redirectTo: 'http://localhost:3000/login'
             }
         })
     }
