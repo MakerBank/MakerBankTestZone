@@ -18,21 +18,35 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 import { useState, useEffect} from 'react';
-import {supabase} from '../../.././components/client.js';
 
 
 
-export default function OrderList() {
-  const [rows,setRows] = useState<any[]>([]);
-  const [page,setPage] = useState(1)
+
+export default function OrderList(rows) {
+  const [page,setPage] = useState(0)
   const [isLastPage,setIsLastPage] = useState(false)
   const [isFirstPage,setIsFirstPage] = useState(true)
   const numberPerPage = 10
 
+  useEffect(() => {
+    console.log(rows.rows.length)
+    if(rows.rows.length===0) return;
+    if(rows.rows.length>=1){
+      setPage(1)
+      setIsLastPage(false)
+    }
+    if(Math.ceil(rows.rows.length/numberPerPage)==1){
+      setIsLastPage(true)
+    } 
+  }, [rows]);
+
   function returnArray(){
-    console.log(rows.length)
-    if(rows.length === 0) return rows
-    var sortedArray = structuredClone(rows.slice((page-1)*numberPerPage,(page)*numberPerPage))
+    console.log(rows.rows.length)
+    console.log(page)
+    if(rows.rows?.length === 0) return [];
+    console.log(rows.rows)
+    var sortedArray = structuredClone(rows.rows.slice((page-1)*numberPerPage,(page)*numberPerPage))
+    console.log(sortedArray)
     sortedArray.sort((a,b) => Date.parse(a.date)-Date.parse(b.date))
     const options = {
       year: "numeric",
@@ -58,41 +72,14 @@ export default function OrderList() {
   }
 
   function nextPage(){
-    if(page+1==Math.ceil(rows.length/numberPerPage)){
+    if(page+1==Math.ceil(rows.rows.length/numberPerPage)){
       setIsLastPage(true)
     }
     setPage(page+1)
     setIsFirstPage(false)
   }
 
-  useEffect(() => {
-    (async () => {
-      let {data, error} = await supabase.from('Transacoes').select()
-      console.log(data)
-      if(data!=undefined){
-        if (data[0] != undefined) {
-          let listOfTransactions = data.reduce(function (result, element) {
-            const arrayCandidatos: any = {};
-            arrayCandidatos.transaction = element.Transacao;
-            const testeString = (new Date(element.Hora)).toISOString()
-            arrayCandidatos.date = testeString;
-            result.push(arrayCandidatos);
-            return result;
-          }, []);
-          console.log(Math.ceil(data.length/numberPerPage))
-          setRows(listOfTransactions);
-          if(Math.ceil(data.length/numberPerPage)==1){
-            setIsLastPage(true)
-            setPage(1)
-          }
-        } else{
-          setIsLastPage(true)
-          setPage(0)
-        }
-      }
-    }
-    )()
-  }, []);
+
   
   return (
     <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
@@ -169,7 +156,7 @@ export default function OrderList() {
           <KeyboardArrowLeftIcon />
         </IconButton>
         <Typography level="body-sm" mx="auto">
-          Page {page} of {Math.ceil(rows.length/numberPerPage)}
+          Page {page} of {Math.ceil(rows.rows.length/numberPerPage)}
         </Typography>
         <IconButton
           onClick={()=>nextPage()}

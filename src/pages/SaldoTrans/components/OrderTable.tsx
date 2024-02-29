@@ -18,15 +18,14 @@ import {supabase} from '../../.././components/client.js';
 
 type Order = 'asc' | 'desc';
 
-export default function OrderTable() {
+export default function OrderTable(rows) {
   const [orderByDate, setOrderByDate] = useState(true);
   const [orderByQnt, setOrderByQnt] = useState(false);
-  const [rows,setRows] = useState([]);
   const [order, setOrder] = React.useState<Order>('desc');
   
   function sortArray(rows,orderByDate,orderByQnt,order){
-    if(rows.length === 0) return rows
-    var sortedArray = structuredClone(rows)
+    if(rows.rows?.length === 0) return [];
+    var sortedArray = structuredClone(rows.rows)
     if(orderByDate===true){
       sortedArray.sort((a,b) => Date.parse(a.date)-Date.parse(b.date))
     }
@@ -50,30 +49,7 @@ export default function OrderTable() {
     } else{
       return sortedArray.reverse()
     }
-  }
-
-  useEffect(() => {
-    (async () => {
-      let {data, error} = await supabase.from('Transacoes').select()
-      console.log(data)
-      if(data!=undefined){
-        if (data[0] != undefined) {
-          let listOfTransactions = data.reduce(function (result, element) {
-            const arrayCandidatos: any = {};
-            arrayCandidatos.transaction = element.Transacao;
-            const testeString = (new Date(element.Hora)).toISOString()
-            arrayCandidatos.date = testeString;
-            result.push(arrayCandidatos);
-            return result;
-          }, []);
-          setRows(listOfTransactions);
-        }
-      }
-    }
-    )()
-  }, []);
-
- 
+  } 
 
   function setPage(typeOfOrder:string){
     if(orderByQnt === true && typeOfOrder==="byQnt"){

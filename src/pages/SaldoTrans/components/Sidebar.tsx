@@ -29,10 +29,12 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useColorScheme } from '@mui/joy/styles';
 
 import ColorSchemeToggle from './ColorSchemeToggle.tsx';
 import { closeSidebar } from '../utils';
 import {supabase} from '../../../components/client.js';
+import {ReactComponent as ReactLogo} from '../../../image/teste.svg';
 
 function Toggler({
   defaultExpanded = false,
@@ -66,7 +68,17 @@ function Toggler({
   );
 }
 
+function logoIcon(isNight) {
+  if(isNight=="light"){
+    return <ReactLogo height="70px" fill='none' stroke='black'></ReactLogo>
+  } else{
+    return <ReactLogo height="70px" fill='none' stroke='yellow'></ReactLogo>
+  }
+  
+}
+
 export default function Sidebar() {
+  const {mode,setMode} = useColorScheme();
   const logoutSupabase = async() =>{  
     await supabase.auth.signOut()
   }
@@ -126,7 +138,6 @@ export default function Sidebar() {
         height: '100dvh', 
         minHeight: '300px', 
         width: 'inherit',
-        overflow:'scroll',
         top: 0,
         left: 0,
         p: 2,
@@ -137,14 +148,12 @@ export default function Sidebar() {
         borderRight: '1px solid',
         borderColor: 'divider',
         }}>
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', padding:'10'}}>
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">Acme Co.</Typography>
+          
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', padding:'10', maxHeight:'50px'}}>
+        {logoIcon(mode)}
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      {/*<Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
       <Box
         sx={{
           minHeight: 0,
@@ -318,7 +327,7 @@ export default function Sidebar() {
             Upgrade plan
           </Button>
         </Card>
-      </Box>
+        </Box>*/}
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', minHeight:'20px'}}>
         <Box sx={{ minWidth: 0, flex: 1 }}>
