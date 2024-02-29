@@ -23,7 +23,7 @@ export default function Saldo() {
 
   useEffect(() => {
     (async () => {
-      let {data, error} = await supabase.from('Transacoes').select()
+      let {data, error} = await supabase.from('Transacoes').select().order('Hora',{ascending:false})
       if(data!=undefined){
         if (data[0] != undefined) {
           let listOfTransactions = data.reduce(function (result, element) {
@@ -121,7 +121,7 @@ export default function Saldo() {
             <Typography level="h2" component="h1">
               Histórico de transações
             </Typography>
-            <IconButton>
+            <IconButton disabled={true}>
               Saldo total: {balance}
             </IconButton>
           </Box>
